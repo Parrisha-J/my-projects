@@ -1,3 +1,4 @@
+import matplotlib.pyplot as plt
 import pickle
 def create_rec():
     print("\n")
@@ -14,7 +15,8 @@ def create_rec():
         else:
             break
     pickle.dump(L, f)
-f.close()
+    f.close()
+
 def display_all():
     print("\n")
     try:
@@ -24,6 +26,7 @@ def display_all():
             print(i)
     except:
         print("file not found")
+
 def append_rec():
     print("\n")
     f=open("Student.dat", 'rb+')
@@ -50,8 +53,8 @@ def search_rec():
         for i in R:
             if i[0]==A:
                 print("Record found")
-                  print(i)
-                  break 
+                print(i)
+                break 
         else:
             print("Record not found")
     except FileNotFoundError:
@@ -87,9 +90,26 @@ def delete_rec():
             L.append(i)
         f.seek(0)
         pickle.dump(L,f)
-  except FileNotFoundError :
+    except FileNotFoundError:
         print("File not found")
 
+def plot_data():
+    try:
+        f = open("Student.dat", "rb")
+        R = pickle.load(f)
+        f.close()
+        names = [i[1] for i in R]         # student names
+        percentages = [i[2] for i in R]   # student percentages
+        plt.figure(figsize=(8,5))
+        plt.bar(names, percentages)
+        plt.xlabel("Students")
+        plt.ylabel("Percentage")
+        plt.title("Student Performance")
+        plt.xticks(rotation=45)
+        plt.tight_layout()
+        plt.show()
+    except FileNotFoundError:
+        print("File not found")
 
 
 while True:
@@ -102,7 +122,8 @@ while True:
     print("4. Search Record")
     print("5. Sort Record")
     print("6. Delete Record")
-    print("7. Quit")
+    print("7. Plot Data")
+    print("8. Quit")
     print("*********************************************")
     choice=int(input("Enter your choice ---->"))
     if choice==1:
@@ -119,6 +140,10 @@ while True:
         sort_rec(ch,basis)
     elif choice==6:
         delete_rec()
-    elif choice==7:
-break else:
+    elif choice ==7:
+        plot_data()
+    elif choice==8:
+        break 
+    else:
+        print("\nWrong Choice!\n\nTry again")
         print("\nWrong Choice!\n\nTry again")
